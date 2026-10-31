@@ -209,3 +209,4 @@ html:not(.dark) .scrollbar-thin::-webkit-scrollbar-thumb {
 .animate-press {
   animation: buttonPulse 0.15s ease-out;
 }
+

@@ -96,3 +96,4 @@ node test.js
 ## 📄 Lisans
 
 Bu proje [MIT Lisansı](LICENSE) kapsamında açık kaynak olarak sunulmuştur.
+
