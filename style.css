@@ -1,0 +1,211 @@
+/* Custom CSS for Modern Calculator */
+
+/* Custom Animations & Interactions */
+:root {
+  --btn-press-scale: 0.94;
+}
+
+/* Light Mode Overrides */
+html:not(.dark) body {
+  background: linear-gradient(135deg, #f1f5f9 0%, #e2e8f0 50%, #cbd5e1 100%);
+  color: #0f172a;
+}
+
+html:not(.dark) .calculator-card {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 25px 50px -12px rgba(100, 116, 139, 0.25), 0 0 0 1px rgba(0, 0, 0, 0.05);
+}
+
+html:not(.dark) header,
+html:not(.dark) footer {
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+html:not(.dark) #previous-operand {
+  color: #64748b;
+}
+
+html:not(.dark) #current-operand {
+  color: #0f172a;
+}
+
+html:not(.dark) .relative.bg-slate-950\/60 {
+  background-color: rgba(248, 250, 252, 0.95);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+html:not(.dark) #history-panel {
+  background-color: rgba(255, 255, 255, 0.97);
+  border-color: rgba(0, 0, 0, 0.1);
+  color: #0f172a;
+}
+
+html:not(.dark) #history-panel h3 {
+  color: #1e293b;
+}
+
+html:not(.dark) .history-card {
+  background-color: #f8fafc;
+  border-color: #e2e8f0;
+}
+
+html:not(.dark) .history-card:hover {
+  background-color: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+/* Calculator Buttons Base */
+.calc-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 3.5rem;
+  border-radius: 1rem;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 500;
+  font-size: 1.25rem;
+  transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  user-select: none;
+  touch-action: manipulation;
+  overflow: hidden;
+  outline: none;
+}
+
+.calc-btn:active,
+.calc-btn.is-pressed {
+  transform: scale(var(--btn-press-scale));
+}
+
+/* Number Buttons */
+.btn-num {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  color: #f8fafc;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.btn-num:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+html:not(.dark) .btn-num {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+}
+
+html:not(.dark) .btn-num:hover {
+  background: #f8fafc;
+  border-color: #cbd5e1;
+}
+
+/* Function Buttons (AC, Backspace, %) */
+.btn-func {
+  background: rgba(148, 163, 184, 0.12);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  color: #38bdf8;
+  font-weight: 600;
+}
+
+.btn-func:hover {
+  background: rgba(148, 163, 184, 0.2);
+  border-color: rgba(56, 189, 248, 0.4);
+}
+
+html:not(.dark) .btn-func {
+  background: #e2e8f0;
+  border: 1px solid #cbd5e1;
+  color: #0284c7;
+}
+
+html:not(.dark) .btn-func:hover {
+  background: #cbd5e1;
+}
+
+/* Operator Buttons (+, -, ×, ÷) */
+.btn-operator {
+  background: rgba(6, 182, 212, 0.15);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  color: #22d3ee;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.btn-operator:hover {
+  background: rgba(6, 182, 212, 0.25);
+  border-color: rgba(34, 211, 238, 0.6);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.25);
+}
+
+.btn-operator.operator-active {
+  background: #06b6d4;
+  color: #0f172a;
+  border-color: #22d3ee;
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.5);
+  font-weight: 700;
+}
+
+html:not(.dark) .btn-operator {
+  background: #e0f2fe;
+  border: 1px solid #bae6fd;
+  color: #0284c7;
+}
+
+html:not(.dark) .btn-operator:hover {
+  background: #bae6fd;
+}
+
+html:not(.dark) .btn-operator.operator-active {
+  background: #0284c7;
+  color: #ffffff;
+  border-color: #0369a1;
+}
+
+/* Equals Button (=) */
+.btn-equals {
+  background: linear-gradient(135deg, #10b981 0%, #06b6d4 100%);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 700;
+  box-shadow: 0 4px 15px -2px rgba(16, 185, 129, 0.4);
+}
+
+.btn-equals:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 20px -2px rgba(16, 185, 129, 0.6);
+}
+
+/* Custom Scrollbar */
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
+}
+
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 9999px;
+}
+
+html:not(.dark) .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+}
+
+/* Keyframe animations */
+@keyframes buttonPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(0.92); }
+  100% { transform: scale(1); }
+}
+
+.animate-press {
+  animation: buttonPulse 0.15s ease-out;
+}

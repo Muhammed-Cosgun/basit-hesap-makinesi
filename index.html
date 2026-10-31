@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Modern Hesap Makinesi</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Outfit', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              500: '#10b981',
+              600: '#059669',
+            }
+          },
+          boxShadow: {
+            'glow-cyan': '0 0 25px -5px rgba(6, 182, 212, 0.4)',
+            'glow-emerald': '0 0 25px -5px rgba(16, 185, 129, 0.45)',
+            'inner-soft': 'inset 0 2px 4px 0 rgba(255, 255, 255, 0.06)',
+          }
+        }
+      }
+    }
+  </script>
+  <!-- Custom Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="min-h-screen flex items-center justify-center p-4 sm:p-6 bg-gradient-to-br from-slate-950 via-slate-900 to-indigo-950 text-slate-100 transition-colors duration-300 selection:bg-cyan-500 selection:text-white">
+
+  <!-- Background decorative light orbs -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none -z-10">
+    <div class="absolute -top-32 -left-32 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl animate-pulse" style="animation-duration: 7s;"></div>
+    <div class="absolute -bottom-32 -right-32 w-96 h-96 bg-indigo-500/20 rounded-full blur-3xl animate-pulse" style="animation-duration: 9s;"></div>
+  </div>
+
+  <!-- Main Calculator Card Container -->
+  <div class="w-full max-w-[390px] relative">
+    
+    <!-- Outer glass glow wrapper -->
+    <div class="calculator-card relative backdrop-blur-2xl bg-slate-900/80 dark:bg-slate-900/85 border border-white/10 dark:border-white/10 rounded-3xl p-5 sm:p-6 shadow-2xl transition-all duration-300">
+      
+      <!-- Header Controls: Theme toggle, sound toggle, history drawer button -->
+      <header class="flex items-center justify-between mb-4 pb-2 border-b border-white/5">
+        <div class="flex items-center gap-2">
+          <span class="inline-flex items-center justify-center w-7 h-7 rounded-xl bg-gradient-to-tr from-cyan-500 to-emerald-400 text-slate-950 font-bold text-sm shadow-sm">
+            🧮
+          </span>
+          <span class="text-xs font-semibold tracking-wider uppercase text-slate-400">Hesap Makinesi</span>
+        </div>
+
+        <div class="flex items-center gap-1.5">
+          <!-- Sound Toggle -->
+          <button id="sound-btn" title="Ses Aç/Kapat" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500/50">
+            <svg id="sound-on-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"></path>
+            </svg>
+            <svg id="sound-off-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z M17 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2"></path>
+            </svg>
+          </button>
+
+          <!-- History Toggle -->
+          <button id="history-toggle-btn" title="Geçmiş" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500/50 relative">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span id="history-badge" class="hidden absolute top-1 right-1 w-2 h-2 rounded-full bg-cyan-400"></span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button id="theme-btn" title="Tema Değiştir (Koyu / Açık)" class="p-2 rounded-xl text-slate-400 hover:text-white hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500/50">
+            <!-- Sun icon for dark theme -->
+            <svg id="theme-sun-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+            </svg>
+            <!-- Moon icon for light theme -->
+            <svg id="theme-moon-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Display Screen Area -->
+      <div class="relative bg-slate-950/60 dark:bg-slate-950/70 border border-white/5 rounded-2xl p-4 sm:p-5 mb-5 flex flex-col justify-end min-h-[110px] text-right shadow-inner overflow-hidden select-none">
+        <!-- Live Expression / Previous Operand with Operator -->
+        <div id="previous-operand" class="font-mono text-sm sm:text-base text-slate-400 tracking-wide min-h-[1.5rem] break-all flex items-center justify-end gap-1 overflow-hidden transition-all duration-150">
+        </div>
+        
+        <!-- Current Operand / Result -->
+        <div id="current-operand" class="font-mono text-3xl sm:text-4xl font-bold text-white tracking-tight break-all transition-all duration-150 mt-1 select-all" data-value="0">
+          0
+        </div>
+      </div>
+
+      <!-- Keypad Grid (5 rows x 4 cols) -->
+      <div class="grid grid-cols-4 gap-2.5 sm:gap-3 select-none">
+        <!-- Row 1: AC, Backspace, %, Division -->
+        <button type="button" class="calc-btn btn-func" data-action="all-clear" id="btn-ac" title="Hepsini Temizle (Esc)">
+          AC
+        </button>
+        <button type="button" class="calc-btn btn-func" data-action="delete" id="btn-delete" title="Son Karakteri Sil (Backspace)">
+          <svg class="w-5 h-5 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2M3 12l6-7h12a1 1 0 011 1v12a1 1 0 01-1 1H9l-6-7z"></path>
+          </svg>
+        </button>
+        <button type="button" class="calc-btn btn-func" data-action="percent" id="btn-percent" title="Yüzde (%)">
+          %
+        </button>
+        <button type="button" class="calc-btn btn-operator" data-operator="÷" id="btn-divide" title="Bölme (/)">
+          ÷
+        </button>
+
+        <!-- Row 2: 7, 8, 9, Multiplication -->
+        <button type="button" class="calc-btn btn-num" data-number="7">7</button>
+        <button type="button" class="calc-btn btn-num" data-number="8">8</button>
+        <button type="button" class="calc-btn btn-num" data-number="9">9</button>
+        <button type="button" class="calc-btn btn-operator" data-operator="×" id="btn-multiply" title="Çarpma (*)">
+          ×
+        </button>
+
+        <!-- Row 3: 4, 5, 6, Subtraction -->
+        <button type="button" class="calc-btn btn-num" data-number="4">4</button>
+        <button type="button" class="calc-btn btn-num" data-number="5">5</button>
+        <button type="button" class="calc-btn btn-num" data-number="6">6</button>
+        <button type="button" class="calc-btn btn-operator" data-operator="−" id="btn-subtract" title="Çıkarma (-)">
+          −
+        </button>
+
+        <!-- Row 4: 1, 2, 3, Addition -->
+        <button type="button" class="calc-btn btn-num" data-number="1">1</button>
+        <button type="button" class="calc-btn btn-num" data-number="2">2</button>
+        <button type="button" class="calc-btn btn-num" data-number="3">3</button>
+        <button type="button" class="calc-btn btn-operator" data-operator="+" id="btn-add" title="Toplama (+)">
+          +
+        </button>
+
+        <!-- Row 5: Sign Toggle, 0, Decimal, Equals -->
+        <button type="button" class="calc-btn btn-num text-lg" data-action="toggle-sign" id="btn-sign" title="İşaret Değiştir (±)">
+          ±
+        </button>
+        <button type="button" class="calc-btn btn-num" data-number="0">0</button>
+        <button type="button" class="calc-btn btn-num font-bold" data-action="decimal" id="btn-decimal" title="Ondalık Nokta (.)">
+          .
+        </button>
+        <button type="button" class="calc-btn btn-equals" data-action="calculate" id="btn-equals" title="Hesapla (= veya Enter)">
+          =
+        </button>
+      </div>
+
+      <!-- Keyboard shortcut hint -->
+      <footer class="mt-4 pt-3 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-500">
+        <span>Klavye desteği aktif</span>
+        <div class="flex items-center gap-1">
+          <kbd class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400 font-mono">0-9</kbd>
+          <kbd class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400 font-mono">+-*/</kbd>
+          <kbd class="px-1.5 py-0.5 rounded bg-white/5 border border-white/10 text-slate-400 font-mono">↵</kbd>
+        </div>
+      </footer>
+    </div>
+
+    <!-- Collapsible History Drawer Modal / Popover -->
+    <div id="history-panel" class="hidden absolute inset-0 z-20 backdrop-blur-xl bg-slate-900/95 dark:bg-slate-950/95 border border-white/10 rounded-3xl p-5 flex flex-col transition-all duration-200">
+      <div class="flex items-center justify-between pb-3 border-b border-white/10">
+        <h3 class="font-semibold text-sm tracking-wide text-slate-200 flex items-center gap-2">
+          <span>📜</span> İşlem Geçmişi
+        </h3>
+        <div class="flex items-center gap-2">
+          <button id="clear-history-btn" class="text-xs text-rose-400 hover:text-rose-300 hover:underline px-2 py-1 rounded transition-colors">
+            Temizle
+          </button>
+          <button id="close-history-btn" class="text-slate-400 hover:text-white p-1 rounded-lg hover:bg-white/10 transition-colors">
+            ✕
+          </button>
+        </div>
+      </div>
+
+      <div id="history-list" class="flex-1 overflow-y-auto space-y-2.5 py-3 pr-1 text-sm font-mono scrollbar-thin">
+        <p class="text-slate-500 text-center py-8 text-xs font-sans">Henüz işlem geçmişi yok</p>
+      </div>
+      
+      <div class="pt-2 border-t border-white/5 text-[11px] text-slate-500 text-center">
+        Geçmişteki sonuca tıklayarak ekrana aktarabilirsiniz.
+      </div>
+    </div>
+
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
